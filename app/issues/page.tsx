@@ -21,14 +21,16 @@ const IssuesPage = async () => {
               Status
             </Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Created
+              Created At
             </Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {issues.map((issue) => (
             <Table.Row key={issue.id}>
-              <Table.Cell className="block md:hidden">{issue.title}</Table.Cell>
+              <Table.Cell className="block md:table-cell">
+                {issue.title}
+              </Table.Cell>
               <Table.Cell className="hidden md:table-cell">
                 {issue.status}
               </Table.Cell>
