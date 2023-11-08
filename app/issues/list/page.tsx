@@ -11,7 +11,7 @@ interface Props {
 }
 
 const IssuesPage = async ({ searchParams }: Props) => {
-  const colums: { label: string; value: keyof Issue; className?: string }[] = [
+  const columns: { label: string; value: keyof Issue; className?: string }[] = [
     {
       label: "Issue",
       value: "title",
@@ -33,8 +33,15 @@ const IssuesPage = async ({ searchParams }: Props) => {
     ? searchParams.status
     : undefined;
 
+  const orderBy = columns
+    .map((column) => column.value)
+    .includes(searchParams.orderBy)
+    ? { [searchParams.orderBy]: "asc" }
+    : undefined;
+
   const issues = await prisma.issue.findMany({
     where: { status },
+    orderBy,
   });
 
   return (
@@ -43,7 +50,7 @@ const IssuesPage = async ({ searchParams }: Props) => {
       <Table.Root variant="surface">
         <Table.Header>
           <Table.Row>
-            {colums.map((column) => (
+            {columns.map((column) => (
               <Table.ColumnHeaderCell key={column.value}>
                 <NextLink
                   href={{
