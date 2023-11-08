@@ -1,27 +1,11 @@
 "use client";
+import { Container, Flex } from "@radix-ui/themes";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React from "react";
 import { AiFillBug } from "react-icons/ai";
-import classnames from "classnames";
-import { useSession } from "next-auth/react";
-import {
-  Avatar,
-  Box,
-  Container,
-  DropdownMenu,
-  Flex,
-  Text,
-} from "@radix-ui/themes";
+import AuthStatus from "./AuthStatus";
+import NavLinks from "./NavLinks";
 
 const NavBar = () => {
-  const currentPath = usePathname();
-  const { status, data: session } = useSession();
-  const links = [
-    { label: "Dashboard", href: "/" },
-    { label: "Issues", href: "/issues/list" },
-  ];
-
   return (
     <nav className="border-b mb-5 px-5 py-3 ">
       <Container>
@@ -30,63 +14,9 @@ const NavBar = () => {
             <Link href="/">
               <AiFillBug />
             </Link>
-            <ul className="flex space-x-6">
-              {links.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className={classnames({
-                      "text-zinc-900": link.href === currentPath,
-                      "text-zinc-500": link.href !== currentPath,
-                      "hover:text-zinc-800 transition-colors": true,
-                    })}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <NavLinks />
           </Flex>
-
-          <Box className="px-2">
-            {status === "authenticated" && (
-              <DropdownMenu.Root>
-                <DropdownMenu.Trigger>
-                  <Avatar
-                    size="2"
-                    radius="full"
-                    src={session.user!.image!}
-                    fallback="?"
-                    className="cursor-pointer"
-                    referrerPolicy="no-referrer"
-                  />
-                </DropdownMenu.Trigger>
-                <DropdownMenu.Content>
-                  <Text size="2">
-                    <DropdownMenu.Label>
-                      {session.user!.email}
-                    </DropdownMenu.Label>
-                    <DropdownMenu.Item>
-                      <Link
-                        href="api/auth/signout"
-                        className="text-zinc-500 hover:text-zinc-800 transition-colors"
-                      >
-                        Sign Out
-                      </Link>
-                    </DropdownMenu.Item>
-                  </Text>
-                </DropdownMenu.Content>
-              </DropdownMenu.Root>
-            )}
-            {status === "unauthenticated" && (
-              <Link
-                href="api/auth/signin"
-                className="text-zinc-500 hover:text-zinc-800 transition-colors"
-              >
-                Sign In
-              </Link>
-            )}
-          </Box>
+          <AuthStatus />
         </Flex>
       </Container>
     </nav>
