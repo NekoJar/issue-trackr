@@ -5,7 +5,14 @@ import React from "react";
 import { AiFillBug } from "react-icons/ai";
 import classnames from "classnames";
 import { useSession } from "next-auth/react";
-import { Box, Container, Flex } from "@radix-ui/themes";
+import {
+  Avatar,
+  Box,
+  Container,
+  DropdownMenu,
+  Flex,
+  Text,
+} from "@radix-ui/themes";
 
 const NavBar = () => {
   const currentPath = usePathname();
@@ -43,12 +50,32 @@ const NavBar = () => {
 
           <Box className="px-2">
             {status === "authenticated" && (
-              <Link
-                href="api/auth/signout"
-                className="text-zinc-500 hover:text-zinc-800 transition-colors"
-              >
-                Sign Out
-              </Link>
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  <Avatar
+                    size="2"
+                    radius="full"
+                    src={session.user!.image!}
+                    fallback="?"
+                    className="cursor-pointer"
+                  />
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                  <Text size="2">
+                    <DropdownMenu.Label>
+                      {session.user!.email}
+                    </DropdownMenu.Label>
+                    <DropdownMenu.Item>
+                      <Link
+                        href="api/auth/signout"
+                        className="text-zinc-500 hover:text-zinc-800 transition-colors"
+                      >
+                        Sign Out
+                      </Link>
+                    </DropdownMenu.Item>
+                  </Text>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
             )}
             {status === "unauthenticated" && (
               <Link
