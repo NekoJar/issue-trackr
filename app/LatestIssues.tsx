@@ -17,7 +17,7 @@ const LatestIssues = async () => {
       <Heading size="4" className="pl-3">
         Latest Issues
       </Heading>
-      <Table.Root className="px-7 pb-7 pt-4">
+      <Table.Root className="px-7 pt-4">
         <Table.Body>
           {issues.map((issue) => (
             <Table.Row key={issue.id}>
